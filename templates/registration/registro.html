@@ -1,0 +1,53 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crear cuenta · EmpresaUN</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="{% static 'css/theme.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="login-wrap">
+  <section class="login-hero">
+    <div>
+      <div class="marca mb-4"><i class="bi bi-box-seam"></i> EmpresaUN</div>
+      <h1>Crea tu cuenta y <em>haz tu primer pedido</em></h1>
+      <p class="lead opacity-75">Regístrate con tus datos para consultar el catálogo y comprar.</p>
+    </div>
+  </section>
+
+  <section class="login-panel">
+    <div class="login-card ancha">
+      <p class="eyebrow">Registro de clientes</p>
+      <h2 class="mb-4">Crear <em>cuenta</em></h2>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="row g-3">
+          <div class="col-md-6">{% include 'registration/_campo.html' with campo=form.identificacion %}</div>
+          <div class="col-md-6">{% include 'registration/_campo.html' with campo=form.fecha_nacimiento %}</div>
+          <div class="col-md-6">{% include 'registration/_campo.html' with campo=form.nombre %}</div>
+          <div class="col-md-6">{% include 'registration/_campo.html' with campo=form.apellidos %}</div>
+          <div class="col-12">{% include 'registration/_campo.html' with campo=form.direccion %}</div>
+          <div class="col-md-6">{% include 'registration/_campo.html' with campo=form.username %}</div>
+          <div class="col-md-6">{% include 'registration/_campo.html' with campo=form.email %}</div>
+          <div class="col-md-6">{% include 'registration/_campo.html' with campo=form.password1 %}</div>
+          <div class="col-md-6">{% include 'registration/_campo.html' with campo=form.password2 %}</div>
+        </div>
+
+        <button class="btn btn-marca w-100 mt-4">Crear cuenta <i class="bi bi-arrow-right"></i></button>
+        <a href="{% url 'login' %}" class="btn btn-outline-secondary w-100 mt-2">Ya tengo cuenta</a>
+      </form>
+    </div>
+  </section>
+</div>
+</body>
+</html>

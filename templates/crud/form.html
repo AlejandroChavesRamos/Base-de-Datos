@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block titulo %}{{ titulo }} · EmpresaUN{% endblock %}
+{% block contenido %}
+<h1 class="mb-4">{{ titulo }}</h1>
+
+<div class="tarjeta form-card">
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <div class="row g-3">
+      {% for campo in form %}
+        <div class="{% if campo.name == 'direccion' %}col-12{% else %}col-md-6{% endif %}">
+          {% include 'registration/_campo.html' with campo=campo %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="d-flex gap-2 mt-4">
+      <button class="btn btn-marca"><i class="bi bi-check2"></i> Guardar</button>
+      <a class="btn btn-outline-secondary" href="{{ url_volver }}">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

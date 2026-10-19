@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h1 class="mb-4">Mis pedidos</h1>
+{% for p in pedidos %}
+<div class="tarjeta mb-3">
+  <div class="d-flex justify-content-between">
+    <div><strong class="titulo fs-5">Pedido #{{ p.id_pedido }}</strong>
+         <span class="text-muted ms-2">{{ p.fecha_pedido }}</span></div>
+    <div class="precio">${{ p.total }}</div>
+  </div>
+  <table class="table tabla mt-3 mb-0">
+    <thead><tr><th>Producto</th><th>Cantidad</th><th>Precio</th></tr></thead>
+    <tbody>
+      {% for d in p.detalles.all %}
+      <tr><td>{{ d.producto.nombre }}</td><td>{{ d.cantidad }}</td><td>${{ d.precio_compra }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% empty %}
+<div class="tarjeta text-muted">Todavía no tienes pedidos.</div>
+{% endfor %}
+{% endblock %}

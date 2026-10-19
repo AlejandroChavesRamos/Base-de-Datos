@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h1 class="mb-4">Resumen</h1>
+<div class="row g-3 mb-4">
+  <div class="col-6 col-xl-3"><div class="tarjeta kpi"><div class="text-muted">Clientes</div><div class="num">{{ n_clientes }}</div></div></div>
+  <div class="col-6 col-xl-3"><div class="tarjeta kpi"><div class="text-muted">Productos</div><div class="num">{{ n_productos }}</div></div></div>
+  <div class="col-6 col-xl-3"><div class="tarjeta kpi"><div class="text-muted">Proveedores</div><div class="num">{{ n_proveedores }}</div></div></div>
+  <div class="col-6 col-xl-3"><div class="tarjeta kpi"><div class="text-muted">Pedidos</div><div class="num">{{ n_pedidos }}</div></div></div>
+</div>
+
+<div class="tarjeta">
+  <h5 class="titulo">Últimos pedidos</h5>
+  <table class="table tabla mb-0">
+    <thead><tr><th>#</th><th>Cliente</th><th>Fecha</th></tr></thead>
+    <tbody>
+    {% for p in ultimos %}
+      <tr><td>{{ p.id_pedido }}</td><td>{{ p.cliente }}</td><td>{{ p.fecha_pedido }}</td></tr>
+    {% empty %}
+      <tr><td colspan="3" class="text-muted">Sin pedidos aún.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

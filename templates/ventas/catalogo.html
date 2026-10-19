@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h1 class="mb-1">Catálogo</h1>
+<p class="text-muted">Productos disponibles.</p>
+
+<form class="mb-4" method="get">
+  <input class="form-control" style="max-width:360px" name="q" value="{{ q }}" placeholder="Buscar producto...">
+</form>
+
+<div class="row g-3">
+  {% for p in productos %}
+  <div class="col-md-6 col-xl-4">
+    <div class="tarjeta h-100">
+      <div class="text-muted small">{{ p.codigo }}</div>
+      <h5 class="titulo">{{ p.nombre }}</h5>
+      <div class="precio">${{ p.precio_unitario }}</div>
+      <div class="text-muted small mt-2"><i class="bi bi-truck"></i> {{ p.proveedor.nombre }}</div>
+    </div>
+  </div>
+  {% empty %}
+  <p class="text-muted">No hay productos que coincidan.</p>
+  {% endfor %}
+</div>
+{% endblock %}

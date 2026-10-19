@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h1 class="mb-1">Nuevo pedido</h1>
+<p class="text-muted">Escribe la cantidad de cada producto que quieres. Los que dejes en 0 no se incluyen.</p>
+
+<form method="post">
+  {% csrf_token %}
+  <div class="tarjeta p-0 overflow-hidden">
+    <table class="table tabla mb-0 align-middle">
+      <thead><tr><th>Producto</th><th>Proveedor</th><th>Precio</th><th style="width:140px">Cantidad</th></tr></thead>
+      <tbody>
+      {% for p in productos %}
+        <tr data-precio="{{ p.precio_unitario|stringformat:'f' }}">
+          <td>{{ p.nombre }}</td>
+          <td class="text-muted">{{ p.proveedor.nombre }}</td>
+          <td>${{ p.precio_unitario }}</td>
+          <td><input type="number" min="0" value="0" name="cant_{{ p.codigo }}" class="form-control form-control-sm"></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <div class="fs-5">Total estimado: <strong id="total">$0</strong></div>
+    <button class="btn btn-marca"><i class="bi bi-check2-circle"></i> Confirmar pedido</button>
+  </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const filas = document.querySelectorAll('tr[data-precio]');
+  function recalcular() {
+    let t = 0;
+    filas.forEach(f => {
+      t += (parseInt(f.querySelector('input').value) || 0) * parseFloat(f.dataset.precio);
+    });
+    document.getElementById('total').textContent = '$' + t.toLocaleString('es-CO');
+  }
+  filas.forEach(f => f.querySelector('input').addEventListener('input', recalcular));
+</script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h1 class="mb-1">Consulta {{ n }}</h1>
+<p class="text-muted">{{ titulo }}</p>
+
+<div class="tarjeta p-0 overflow-hidden mb-3">
+  <table class="table tabla mb-0">
+    <thead><tr>{% for c in columnas %}<th>{{ c }}</th>{% endfor %}</tr></thead>
+    <tbody>
+    {% for fila in filas %}
+      <tr>{% for v in fila %}<td>{{ v|default_if_none:"—" }}</td>{% endfor %}</tr>
+    {% empty %}
+      <tr><td colspan="{{ columnas|length }}" class="text-muted">Sin resultados.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<details class="tarjeta">
+  <summary>Ver SQL ejecutado</summary>
+  <pre class="mt-3 mb-0">{{ sql }}</pre>
+</details>
+{% endblock %}

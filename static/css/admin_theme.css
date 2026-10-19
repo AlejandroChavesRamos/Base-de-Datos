@@ -1,0 +1,109 @@
+/* ===== 1. VARIABLES (mismos colores que theme.css) ===== */
+:root:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+  color-scheme: light;
+
+  --primary:            #17324d;
+  --secondary:          #17324d;
+  --accent:             #e0892f;
+  --primary-fg:         #ffffff;
+
+  --body-fg:            #1c2733;
+  --body-bg:            #faf7f2;
+  --body-quiet-color:   #6b7683;
+  --body-loud-color:    #0f2336;
+
+  --header-color:       #ffffff;
+  --header-branding-color: #ffffff;
+  --header-bg:          #17324d;
+  --header-link-color:  #ffffff;
+
+  --breadcrumbs-fg:     #cbd5df;
+  --breadcrumbs-link-fg:#ffffff;
+  --breadcrumbs-bg:     #0f2336;
+
+  --link-fg:            #17324d;
+  --link-hover-color:   #e0892f;
+  --link-selected-fg:   #e0892f;
+
+  --hairline-color:     #e6e0d6;
+  --border-color:       #e6e0d6;
+  --darkened-bg:        #f4efe6;
+  --selected-bg:        #f4efe6;
+  --selected-row:       #fff4e2;
+
+  --button-fg:          #ffffff;
+  --button-bg:          #17324d;
+  --button-hover-bg:    #0f2336;
+  --default-button-bg:  #17324d;
+  --default-button-hover-bg: #0f2336;
+  --object-tools-fg:    #ffffff;
+  --object-tools-bg:    #17324d;
+  --object-tools-hover-bg: #0f2336;
+}
+
+/* ===== 2. BASE ===== */
+body { font-family: 'Inter', system-ui, sans-serif; }
+h1, h2, h3, #site-name { font-family: 'Fraunces', Georgia, serif; }
+
+/* ===== 3. CABECERA ===== */
+#header { padding: 14px 28px; box-shadow: 0 2px 12px rgba(15, 35, 54, .25); }
+#site-name a { font-size: 1.5rem; font-weight: 700; color: #fff; }
+#site-name span { color: var(--accent); font-style: italic; font-weight: 600; font-size: 1.1rem; }
+#user-tools a { border-bottom: 0; opacity: .85; }
+#user-tools a:hover { opacity: 1; color: var(--accent); }
+.volver {
+  display: inline-block; margin-left: 24px; padding: 6px 14px;
+  border: 1px solid rgba(255, 255, 255, .4); border-radius: 8px;
+  color: #fff; font-size: .85rem;
+}
+.volver:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+
+/* ===== 4. TARJETAS (módulos) ===== */
+.module {
+  background: #fff; border: 1px solid var(--border-color);
+  border-radius: 14px; overflow: hidden;
+  box-shadow: 0 6px 24px rgba(23, 50, 77, .08);
+  margin-bottom: 24px;
+}
+.module caption, .module h2 {
+  background: #f4efe6; color: var(--body-quiet-color);
+  font-family: 'Inter', sans-serif; font-size: .75rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; padding: 12px 16px;
+}
+.module caption a, .module h2 a { color: var(--body-quiet-color); }
+#content h1 { font-size: 1.9rem; color: var(--body-loud-color); margin-bottom: 20px; }
+
+/* ===== 5. TABLAS Y LISTAS ===== */
+thead th { background: #f4efe6; color: var(--body-quiet-color);
+  font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; }
+thead th a { color: var(--body-quiet-color); }
+tbody tr:hover { background: #fff8ec; }
+#changelist .actions { background: #f4efe6; }
+
+/* ===== 6. BOTONES Y FORMULARIOS ===== */
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+  border-radius: 10px; padding: 10px 18px; font-weight: 600;
+}
+.submit-row { background: #fff; border: 1px solid var(--border-color); border-radius: 14px; }
+.submit-row a.deletelink { border-radius: 10px; padding: 10px 18px; }
+.object-tools a { border-radius: 999px; padding: 6px 16px; }
+input[type=text], input[type=password], input[type=email], input[type=number],
+input[type=date], input[type=url], textarea, select {
+  border-radius: 8px; border: 1px solid var(--border-color); padding: 8px 10px;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary); outline: 0; box-shadow: 0 0 0 3px rgba(23, 50, 77, .15);
+}
+fieldset.module { padding-bottom: 8px; }
+
+/* ===== 7. MENSAJES ===== */
+ul.messagelist li { border-radius: 10px; margin: 0 0 8px; }
+
+.module caption, .module caption a, .module caption a:link, .module caption a:visited,
+.module h2, .inline-group h2 {
+  background: #f4efe6 !important;
+  color: #2b3a4a !important;
+}
+.theme-toggle { display: none; } 

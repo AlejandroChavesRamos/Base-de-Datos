@@ -1,5 +1,5 @@
+from django.conf import settings
 from django.db import models
-
 
 class Proveedor(models.Model):
     nit = models.CharField(max_length=20, primary_key=True)
@@ -40,6 +40,13 @@ class Producto(models.Model):
 
 class Cliente(models.Model):
     id_cliente = models.AutoField(primary_key=True)
+    usuario = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        db_column='id_usuario',
+        related_name='cliente',
+    )
     identificacion = models.CharField(max_length=20, unique=True)
     nombre = models.CharField(max_length=60)
     apellidos = models.CharField(max_length=60)
