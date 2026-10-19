@@ -10,14 +10,11 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="{% static 'css/theme.css' %}" rel="stylesheet">
   <link href="{% static 'css/efectos.css' %}" rel="stylesheet">
-  <link href="{% static 'css/cielo.css' %}" rel="stylesheet">
 </head>
 <body>
 <div class="app">
   <aside class="sidebar">
-    <div class="marca">
-      <img src="{% static 'img/logo.png' %}" alt="EmpresaUN" class="logo-marca">
-    </div>
+    <div class="marca"><i class="bi bi-box-seam"></i> EmpresaUN</div>
     {% with url=request.resolver_match.url_name %}
       {% if user.is_staff %}
         <div class="seccion">Operación</div>
@@ -63,7 +60,6 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{% static 'js/ui.js' %}"></script>
-<script src="{% static 'js/cielo.js' %}"></script>
 {% block scripts %}{% endblock %}
 </body>
 </html>
