@@ -1,0 +1,42 @@
+/* Capas animadas sobre fondo-panel (cliente y Cuentas y permisos). */
+.cielo-logistica {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cielo-item {
+  position: absolute;
+  left: -90px;
+  top: var(--y, 20%);
+  width: var(--s, 44px);
+  height: auto;
+  color: var(--c, #17324d);
+  opacity: .48;
+  filter: drop-shadow(0 6px 10px rgba(15, 35, 54, .22));
+  animation: cielo-cruzar var(--d, 22s) linear var(--delay, 0s) infinite;
+  will-change: transform;
+}
+.cielo-item svg { display: block; width: 100%; height: auto; }
+.cielo-item.vuelta { animation-name: cielo-cruzar-izq; }
+.cielo-avion { --s: 54px; --c: #17324d; opacity: .42; }
+.cielo-caja { --s: 34px; --c: #e0892f; }
+.cielo-camion { --s: 48px; --c: #17324d; opacity: .4; }
+
+@keyframes cielo-cruzar {
+  0%   { transform: translate3d(0, 0, 0) rotate(-6deg); }
+  25%  { transform: translate3d(30vw, -14px, 0) rotate(4deg); }
+  55%  { transform: translate3d(62vw, 10px, 0) rotate(-3deg); }
+  100% { transform: translate3d(115vw, -8px, 0) rotate(5deg); }
+}
+@keyframes cielo-cruzar-izq {
+  0%   { transform: translate3d(115vw, 0, 0) scaleX(-1) rotate(-4deg); }
+  40%  { transform: translate3d(55vw, 16px, 0) scaleX(-1) rotate(5deg); }
+  100% { transform: translate3d(-20vw, -10px, 0) scaleX(-1) rotate(-2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cielo-logistica { display: none; }
+}

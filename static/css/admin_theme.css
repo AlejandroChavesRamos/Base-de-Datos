@@ -44,8 +44,21 @@ html[data-theme="dark"] {
 }
 
 /* ===== 2. BASE ===== */
-body { font-family: 'Inter', system-ui, sans-serif; }
+html { min-height: 100%; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background:
+    linear-gradient(rgba(250, 247, 242, .80), rgba(250, 247, 242, .80)),
+    url('../img/fondo-panel.jpg') center / cover no-repeat fixed !important;
+}
 h1, h2, h3, #site-name { font-family: 'Fraunces', Georgia, serif; }
+#container, .main, #content, #content-main, .content, #main {
+  background: transparent !important;
+}
+#nav-sidebar {
+  background: rgba(250, 247, 242, .9) !important;
+  backdrop-filter: blur(8px);
+}
 
 /* ===== 3. CABECERA ===== */
 #header { padding: 14px 28px; box-shadow: 0 2px 12px rgba(15, 35, 54, .25); }
@@ -111,4 +124,67 @@ ul.messagelist li { border-radius: 10px; margin: 0 0 8px; }
   background: #f4efe6 !important;
   color: #2b3a4a !important;
 }
-.theme-toggle { display: none; } 
+.theme-toggle { display: none; }
+
+/* ===== 8. ANIMACIÓN DE BOTONES (todas las secciones del admin) ===== */
+.button, input[type=submit], input[type=button], input[type=reset],
+.submit-row input, .submit-row a, a.button, .object-tools a,
+.paginator a, .paginator .end, .volver, a.deletelink, a.addlink,
+a.changelink, a.viewlink, a.historylink, .button.cancel-link,
+#changelist .actions button, #changelist .actions select + .button,
+.module caption a.addlink {
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease,
+              color .2s ease, border-color .2s ease, filter .2s ease, opacity .2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.button:hover, input[type=submit]:hover, input[type=button]:hover, input[type=reset]:hover,
+.submit-row input:hover, .submit-row a:hover, a.button:hover, .object-tools a:hover,
+.paginator a:hover, .volver:hover, a.addlink:hover, a.changelink:hover,
+a.viewlink:hover, a.historylink:hover, .button.cancel-link:hover,
+#changelist .actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(23, 50, 77, .22);
+}
+.button:active, input[type=submit]:active, input[type=button]:active,
+.submit-row input:active, a.button:active, .object-tools a:active,
+.paginator a:active, .volver:active {
+  transform: translateY(0) scale(.97);
+  box-shadow: none;
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+  overflow: hidden;
+}
+.button.default::after, input[type=submit].default::after, .submit-row input.default::after {
+  content: ""; position: absolute; top: 0; left: -80%; width: 45%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, .38), transparent);
+  transform: skewX(-20deg); pointer-events: none;
+}
+.button.default:hover::after, input[type=submit].default:hover::after,
+.submit-row input.default:hover::after { animation: admin-brillo .75s ease; }
+@keyframes admin-brillo { to { left: 135%; } }
+
+.deletelink, .submit-row a.deletelink, a.deletelink {
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+.deletelink:hover, .submit-row a.deletelink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(229, 72, 77, .4);
+}
+
+#user-tools a {
+  display: inline-block;
+  transition: transform .2s ease, color .2s ease, opacity .2s ease;
+}
+#user-tools a:hover { transform: translateY(-1px); }
+
+.object-tools a.addlink:hover { letter-spacing: .02em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .button:hover, input[type=submit]:hover, a.button:hover, .object-tools a:hover,
+  .paginator a:hover, .volver:hover, .deletelink:hover {
+    transform: none !important;
+  }
+  .button.default::after, input[type=submit].default::after { display: none; }
+} 
