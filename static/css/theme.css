@@ -127,8 +127,10 @@ em { color: var(--c-acento); font-style: italic; }
   display: block; width: 100%; max-width: 168px; height: auto;
   background: transparent; border-radius: 0; padding: 0;
   filter: drop-shadow(0 8px 16px rgba(0, 0, 0, .28));
-  animation: logo-entra .7s cubic-bezier(.2, 1.2, .3, 1) both;
+  transition: scale .25s cubic-bezier(.2, 1.2, .3, 1);
+  cursor: pointer;
 }
+.logo-marca:hover { scale: 1.09; }
 .login-hero .logo-marca {
   max-width: 220px;
   animation: logo-entra .8s cubic-bezier(.2, 1.2, .3, 1) both,

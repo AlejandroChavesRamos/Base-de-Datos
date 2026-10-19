@@ -14,7 +14,9 @@
 <body>
 <div class="app">
   <aside class="sidebar">
-    <div class="marca"><i class="bi bi-box-seam"></i> EmpresaUN</div>
+    <div class="marca">
+      <img src="{% static 'img/logo.png' %}" alt="" class="logo-marca">
+    </div>
     {% with url=request.resolver_match.url_name %}
       {% if user.is_staff %}
         <div class="seccion">Operación</div>
