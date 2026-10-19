@@ -125,8 +125,8 @@ em { color: var(--c-acento); font-style: italic; }
 }
 .logo-marca {
   display: block; width: 100%; max-width: 168px; height: auto;
-  background: #fff; border-radius: 16px; padding: .4rem;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
+  background: transparent; border-radius: 0; padding: 0;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, .28));
   animation: logo-entra .7s cubic-bezier(.2, 1.2, .3, 1) both;
 }
 .login-hero .logo-marca {
