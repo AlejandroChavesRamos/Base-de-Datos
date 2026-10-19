@@ -1,0 +1,186 @@
+/* =====================================================================
+   EFECTOS: hover en botones + avisos animados + ventana de confirmación
+   Se carga DESPUÉS de theme.css (ver base.html), así sobrescribe sin tocarlo.
+   ===================================================================== */
+
+/* ============ 1. HOVER EN BOTONES ============ */
+.btn, .btn-editar, .paginas a, .buscador .limpiar, .sidebar .nav-link {
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease,
+              color .2s ease, border-color .2s ease;
+}
+.btn i, .btn-editar i, .sidebar .nav-link i { display: inline-block; transition: transform .25s ease; }
+
+/* Todos los .btn: se elevan con sombra y se hunden al presionar */
+.btn:not(:disabled):not(.disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(23, 50, 77, .22);
+}
+.btn:not(:disabled):not(.disabled):active { transform: translateY(0) scale(.97); box-shadow: none; }
+
+/* Botón principal: además tiene un brillo que lo cruza y el icono reacciona */
+.btn-marca {
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;  --bs-btn-hover-bg: var(--c-primario-osc);
+  --bs-btn-active-color: #fff; --bs-btn-active-bg: var(--c-primario-osc);
+  --bs-btn-hover-border-color: transparent; --bs-btn-active-border-color: transparent;
+  position: relative; overflow: hidden;
+}
+.btn-marca::after {
+  content: ""; position: absolute; top: 0; left: -80%; width: 45%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, .38), transparent);
+  transform: skewX(-20deg); pointer-events: none;
+}
+.btn-marca:hover::after { animation: ui-brillo .75s ease; }
+@keyframes ui-brillo { to { left: 135%; } }
+.btn-marca:hover i.bi-arrow-right { transform: translateX(4px); }
+.btn-marca:hover i.bi-plus-lg { transform: rotate(90deg); }
+.btn-marca:hover i.bi-check2, .btn-marca:hover i.bi-check2-circle { transform: scale(1.25); }
+
+/* Botones con borde (Cancelar, Crear una cuenta, ...): se rellenan de azul */
+.btn-outline-secondary {
+  --bs-btn-hover-color: #fff;  --bs-btn-hover-bg: var(--c-primario); --bs-btn-hover-border-color: var(--c-primario);
+  --bs-btn-active-color: #fff; --bs-btn-active-bg: var(--c-primario-osc); --bs-btn-active-border-color: var(--c-primario-osc);
+}
+
+/* Cerrar sesión: la flecha de salida se desplaza */
+.sidebar .btn-outline-light:hover i { transform: translateX(4px); }
+
+/* Editar (botón de las tablas) */
+.btn-editar:hover {
+  transform: translateY(-2px); background: var(--c-primario); border-color: var(--c-primario);
+  color: #fff; box-shadow: 0 8px 18px rgba(23, 50, 77, .2);
+}
+.btn-editar:hover i { transform: rotate(-15deg) scale(1.15); }
+.btn-editar:active { transform: translateY(0) scale(.97); }
+
+/* Paginación y "Limpiar" */
+.paginas a { padding: .35rem .85rem; border-radius: 50px; }
+.paginas a:hover { background: var(--c-primario); color: #fff; transform: translateY(-2px); box-shadow: 0 6px 14px rgba(23, 50, 77, .2); }
+.buscador .limpiar { padding: .3rem .75rem; border-radius: 50px; }
+.buscador .limpiar:hover { background: rgba(229, 72, 77, .12); color: #e5484d; }
+
+/* Menú lateral: el enlace se desliza un poco */
+.sidebar .nav-link:hover { transform: translateX(4px); }
+.sidebar .nav-link:hover i { transform: scale(1.2); }
+
+/* Botón rojo (confirmar eliminación) */
+.btn-peligro {
+  --bs-btn-color: #fff;        --bs-btn-bg: #e5484d;        --bs-btn-border-color: #e5484d;
+  --bs-btn-hover-color: #fff;  --bs-btn-hover-bg: #cf3a3f;  --bs-btn-hover-border-color: #cf3a3f;
+  --bs-btn-active-color: #fff; --bs-btn-active-bg: #b93036; --bs-btn-active-border-color: #b93036;
+}
+.btn-peligro:not(:disabled):hover { box-shadow: 0 8px 18px rgba(229, 72, 77, .4); }
+
+.tarjeta-pedido {
+  animation: pedido-entra .5s ease both;
+  animation-delay: calc(var(--i, 0) * .07s);
+}
+@keyframes pedido-entra {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+.btn-cancelar:hover { box-shadow: 0 8px 18px rgba(229, 72, 77, .4); }
+
+/* ============ 2. VENTANAS EMERGENTES (aviso + confirmación) ============ */
+.ui-overlay {
+  position: fixed; inset: 0; z-index: 3000;
+  display: grid; place-items: center; padding: 1rem;
+  background: rgba(15, 35, 54, .5);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  opacity: 0; transition: opacity .25s ease;
+}
+.ui-overlay.visible { opacity: 1; }
+.ui-overlay.saliendo { opacity: 0; }
+
+.ui-caja {
+  position: relative; width: min(92vw, 390px); text-align: center;
+  background: #fff; border-radius: 22px; padding: 2.4rem 1.8rem 2rem;
+  box-shadow: 0 30px 80px rgba(15, 35, 54, .4);
+  transform: translateY(24px) scale(.9); opacity: 0;
+  transition: transform .45s cubic-bezier(.2, 1.25, .3, 1), opacity .25s ease;
+}
+.ui-overlay.visible .ui-caja { transform: none; opacity: 1; }
+.ui-overlay.saliendo .ui-caja { transform: translateY(12px) scale(.95); opacity: 0; transition-duration: .25s; }
+
+/* Colores por tipo */
+.ui-success { --ui-color: #2fb86b; --ui-sombra: rgba(47, 184, 107, .45); }
+.ui-eliminado, .ui-error { --ui-color: #e5484d; --ui-sombra: rgba(229, 72, 77, .45); }
+.ui-warning { --ui-color: var(--c-acento, #e0892f); --ui-sombra: rgba(224, 137, 47, .45); }
+.ui-info { --ui-color: var(--c-primario, #17324d); --ui-sombra: rgba(23, 50, 77, .4); }
+
+/* Cuadro de color con el icono blanco */
+.ui-icono {
+  position: relative; width: 96px; height: 96px; margin: 0 auto 1.3rem;
+  display: grid; place-items: center; border-radius: 26px;
+  background: var(--ui-color); box-shadow: 0 14px 30px var(--ui-sombra);
+  transform: scale(0) rotate(-25deg);
+}
+.ui-overlay.visible .ui-icono { animation: ui-pop .6s cubic-bezier(.2, 1.5, .4, 1) .15s forwards; }
+.ui-overlay.visible .ui-warning .ui-icono { animation: ui-pop .6s cubic-bezier(.2, 1.5, .4, 1) .15s forwards, ui-agitar .6s ease .9s; }
+@keyframes ui-pop { to { transform: scale(1) rotate(0); } }
+@keyframes ui-agitar {
+  0%, 100% { transform: rotate(0); } 20% { transform: rotate(-10deg); }
+  40% { transform: rotate(9deg); }   60% { transform: rotate(-6deg); } 80% { transform: rotate(4deg); }
+}
+.ui-icono::after {            /* onda expansiva */
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  border: 3px solid var(--ui-color); opacity: 0; pointer-events: none;
+}
+.ui-overlay.visible .ui-icono::after { animation: ui-onda 1s ease-out .6s; }
+@keyframes ui-onda { 0% { transform: scale(1); opacity: .55; } 100% { transform: scale(1.8); opacity: 0; } }
+
+/* Icono dibujado a trazo (chulito, X, papelera, !) */
+.ui-icono svg { width: 58px; height: 58px; overflow: visible; }
+.ui-icono svg path { fill: none; stroke: #fff; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+.ui-trazo { stroke-dasharray: 100; stroke-dashoffset: 100; opacity: 0; }
+.ui-overlay.visible .ui-trazo { animation: ui-dibujar .45s ease-out .55s both; }
+.ui-overlay.visible .ui-trazo.t2 { animation-delay: .85s; }
+@keyframes ui-dibujar {
+  0% { stroke-dashoffset: 100; opacity: 0; } 1% { opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 1; }
+}
+.ui-tapa { transform-origin: 22px 30px; }
+.ui-overlay.visible .ui-tapa { animation: ui-tapa .7s ease 1.1s; }
+@keyframes ui-tapa {
+  0%, 100% { transform: rotate(0); } 35% { transform: rotate(-28deg) translateY(-4px); } 65% { transform: rotate(-12deg); }
+}
+
+/* Chispas (solo en los avisos verdes) */
+.ui-chispa {
+  position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; margin: -4.5px;
+  border-radius: 50%; background: var(--c); opacity: 0; pointer-events: none;
+}
+.ui-overlay.visible .ui-chispa { animation: ui-chispa .9s cubic-bezier(.1, .7, .3, 1) .6s both; }
+@keyframes ui-chispa {
+  0%   { transform: rotate(var(--a)) translateY(-50px) scale(.4); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: rotate(var(--a)) translateY(-96px) scale(1); opacity: 0; }
+}
+
+/* Textos y botones */
+.ui-titulo, .ui-texto, .ui-botones { opacity: 0; transform: translateY(8px); }
+.ui-titulo { font-family: var(--f-titulo, Georgia, serif); font-weight: 700; font-size: 1.5rem; margin: 0 0 .4rem; color: var(--c-texto, #1c2733); }
+.ui-texto { margin: 0; color: var(--c-suave, #6b7683); font-size: .98rem; }
+.ui-texto:empty { display: none; }
+.ui-overlay.visible .ui-titulo { animation: ui-sube .4s ease .45s forwards; }
+.ui-overlay.visible .ui-texto  { animation: ui-sube .4s ease .55s forwards; }
+.ui-overlay.visible .ui-botones { animation: ui-sube .4s ease .65s forwards; }
+@keyframes ui-sube { to { opacity: 1; transform: none; } }
+.ui-botones { display: flex; gap: .7rem; justify-content: center; margin-top: 1.5rem; }
+.ui-botones:empty { display: none; }
+.ui-botones .btn { min-width: 124px; border-radius: 10px; padding: .65rem 1.1rem; font-weight: 600; }
+
+/* Barra de tiempo (se pausa si pones el mouse encima) */
+.ui-barra-wrap { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; overflow: hidden; border-radius: 0 0 22px 22px; }
+.ui-barra { height: 100%; background: var(--ui-color); transform-origin: left; }
+.ui-overlay.visible .ui-barra { animation: ui-barra 2.8s linear .3s forwards; }
+@keyframes ui-barra { to { transform: scaleX(0); } }
+.ui-caja:hover .ui-barra { animation-play-state: paused; }
+
+/* ============ 3. ACCESIBILIDAD: respetar "reducir movimiento" ============ */
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover, .btn:active, .btn-editar:hover, .sidebar .nav-link:hover, .paginas a:hover { transform: none !important; }
+  .btn-marca::after, .ui-chispa, .ui-icono::after { display: none; }
+  .logo-marca, .tarjeta-pedido { animation: none !important; }
+  .ui-overlay .ui-icono, .ui-overlay .ui-titulo, .ui-overlay .ui-texto, .ui-overlay .ui-botones,
+  .ui-overlay .ui-trazo, .ui-overlay .ui-tapa { animation: none !important; opacity: 1; transform: none; stroke-dashoffset: 0; }
+}

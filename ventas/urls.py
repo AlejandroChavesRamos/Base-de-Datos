@@ -8,6 +8,7 @@ urlpatterns = [
     path('catalogo/', views.catalogo, name='catalogo'),
     path('mis-pedidos/', views.mis_pedidos, name='mis_pedidos'),
     path('nuevo-pedido/', views.nuevo_pedido, name='nuevo_pedido'),
+    path('mis-pedidos/<int:pk>/cancelar/', views.cancelar_pedido, name='cancelar_pedido'),
 
     # Staff
     path('panel/', views.dashboard, name='dashboard'),

@@ -13,8 +13,11 @@
 <body>
 <div class="login-wrap">
   <section class="login-hero">
-    <div>
-      <div class="marca mb-4"><i class="bi bi-box-seam"></i> EmpresaUN</div>
+    {% include "registration/_fondo_pedidos.html" %}
+    <div class="hero-contenido">
+      <div class="marca mb-4">
+        <img src="{% static 'img/logo.jpg' %}" alt="EmpresaUN" class="logo-marca">
+      </div>
       <h1>Crea tu cuenta y <em>haz tu primer pedido</em></h1>
       <p class="lead opacity-75">Regístrate con tus datos para consultar el catálogo y comprar.</p>
     </div>
@@ -22,6 +25,9 @@
 
   <section class="login-panel">
     <div class="login-card ancha">
+      <div class="marca marca-movil mb-3">
+        <img src="{% static 'img/logo.jpg' %}" alt="EmpresaUN" class="logo-marca">
+      </div>
       <p class="eyebrow">Registro de clientes</p>
       <h2 class="mb-4">Crear <em>cuenta</em></h2>
 

@@ -30,22 +30,118 @@ em { color: var(--c-acento); font-style: italic; }
 
 /* ============ 3. LOGIN ============ */
 .login-wrap { min-height: 100vh; display: grid; grid-template-columns: 1.1fr 1fr; }
+/* --- Hero izquierdo: degradado + brillos que respiran + pedidos animados --- */
 .login-hero {
-  background: linear-gradient(135deg, var(--c-primario), var(--c-primario-osc));
-  color: #fff; display: flex; align-items: center; padding: 4rem;
+  position: relative; overflow: hidden; color: #fff;
+  display: flex; align-items: center; padding: 4rem;
+  background:
+    radial-gradient(600px 400px at 85% 10%, rgba(224, 137, 47, .22), transparent 70%),
+    radial-gradient(500px 400px at 10% 95%, rgba(80, 140, 200, .20), transparent 70%),
+    linear-gradient(135deg, var(--c-primario), var(--c-primario-osc));
+  background-size: 140% 140%, 140% 140%, 100% 100%;
+  animation: respirar 14s ease-in-out infinite alternate;
+}
+.hero-contenido { position: relative; z-index: 2; }
+.fondo-pedidos { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+.pedido {
+  position: absolute; left: var(--x); bottom: -90px;
+  display: flex; align-items: center; gap: .7rem;
+  padding: .65rem .95rem .65rem .7rem; border-radius: 14px;
+  background: rgba(255, 255, 255, .09);
+  border: 1px solid rgba(255, 255, 255, .16);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
+  opacity: 0;
+  animation: subir var(--d) linear var(--t) infinite;
+}
+.pedido i {
+  width: 38px; height: 38px; border-radius: 10px; flex: none;
+  display: grid; place-items: center; font-size: 1.15rem;
+  background: rgba(224, 137, 47, .22); color: var(--c-acento);
+}
+.pedido b { display: block; font-size: .85rem; font-weight: 600; line-height: 1.2; }
+.pedido small { font-size: .74rem; opacity: .7; }
+.pedido.lejos { --o: .35; --s: .85; filter: blur(1px); }
+
+/* Ruta con camión que cruza el hero */
+.ruta { position: absolute; left: 0; right: 0; bottom: 56px; border-top: 2px dashed rgba(255, 255, 255, .18); }
+.camion {
+  position: absolute; top: -26px; left: -60px; font-size: 1.7rem;
+  color: var(--c-acento); opacity: .9;
+  animation: recorrer 16s linear infinite;
+}
+
+@keyframes subir {
+  0%   { transform: translate(0, 0) scale(var(--s, 1)); opacity: 0; }
+  10%  { opacity: var(--o, .9); }
+  50%  { transform: translate(14px, -55vh) scale(var(--s, 1)); }
+  88%  { opacity: var(--o, .9); }
+  100% { transform: translate(-6px, -115vh) scale(var(--s, 1)); opacity: 0; }
+}
+@keyframes recorrer { from { left: -60px; } to { left: 100%; } }
+@keyframes respirar { from { background-position: 0% 0%, 100% 100%, 0 0; } to { background-position: 40% 30%, 60% 70%, 0 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .login-hero, .pedido, .camion, .logo-marca { animation: none; }
+  .pedido { opacity: .5; bottom: auto; top: 20%; }
+  .camion { left: 20%; }
 }
 .login-hero h1 { font-size: clamp(2rem, 4vw, 3.2rem); }
-.login-panel { display: flex; align-items: center; justify-content: center; padding: 2rem; }
+/* --- Panel derecho: fondo crema + patrón de pedidos suave --- */
+.login-panel {
+  position: relative; display: flex; align-items: center; justify-content: center; padding: 2rem;
+  background: var(--c-fondo);
+}
+.login-panel::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: url('../img/fondo.jpg') center / cover no-repeat;
+  opacity: .7;              /* 1 = foto sin atenuar, 0.2 = muy suave */
+}
+.login-card {
+  position: relative; z-index: 1;
+  background: rgba(255, 255, 255, .88);
+  backdrop-filter: blur(6px);
+  border-radius: 18px; padding: 2rem;
+  box-shadow: 0 10px 40px rgba(23, 50, 77, .15);
+}
 .login-card { width: 100%; max-width: 400px; }
 .eyebrow { color: var(--c-suave); font-style: italic; font-family: var(--f-titulo); }
 
 /* ============ 4. APP (sidebar + contenido) ============ */
-.app { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+.app {
+  display: grid; grid-template-columns: 260px 1fr; min-height: 100vh;
+  background:
+    linear-gradient(rgba(250, 247, 242, .80), rgba(250, 247, 242, .80)),  /* velo crema */
+    url('../img/fondo-panel.jpg') center / cover no-repeat fixed;
+}
 .sidebar {
   background: var(--c-primario); color: #fff; padding: 1.5rem 1rem;
   display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto;
 }
-.marca { font-family: var(--f-titulo); font-size: 1.4rem; font-weight: 700; margin: 0 .5rem 1rem; }
+.marca {
+  font-family: var(--f-titulo); font-size: 1.4rem; font-weight: 700;
+  margin: 0 .5rem 1.2rem; display: flex; align-items: center;
+}
+.logo-marca {
+  display: block; width: 100%; max-width: 168px; height: auto;
+  background: #fff; border-radius: 16px; padding: .4rem;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
+  animation: logo-entra .7s cubic-bezier(.2, 1.2, .3, 1) both;
+}
+.login-hero .logo-marca {
+  max-width: 220px;
+  animation: logo-entra .8s cubic-bezier(.2, 1.2, .3, 1) both,
+             logo-flota 4.2s ease-in-out 1s infinite;
+}
+@keyframes logo-entra {
+  from { opacity: 0; transform: translateY(-14px) scale(.82); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes logo-flota {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
 .sidebar .seccion {
   font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
   opacity: .5; margin: 1.2rem .9rem .4rem;
@@ -73,9 +169,13 @@ em { color: var(--c-acento); font-style: italic; }
 pre { background: #f4efe6; padding: 1rem; border-radius: 10px; font-size: .85rem; }
 
 /* ============ 6. RESPONSIVE ============ */
+.marca-movil { display: none; justify-content: center; }
+.marca-movil .logo-marca { max-width: 140px; }
+
 @media (max-width: 800px) {
   .login-wrap { grid-template-columns: 1fr; }
   .login-hero { display: none; }
+  .marca-movil { display: flex; }
   .app { grid-template-columns: 1fr; }
   .sidebar { position: static; height: auto; }
   .contenido { padding: 1.2rem; }
@@ -132,3 +232,22 @@ td .acciones { display: flex; justify-content: flex-end; align-items: center; ga
   transition-duration: .3s; font-size: 2px;
 }
 .btn-eliminar:hover::before { font-size: 13px; opacity: 1; transform: translateY(30px); }
+
+.btn-cancelar {
+  width: 42px; height: 42px; border-radius: 50%;
+  background-color: #e5484d; border: none; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 14px rgba(229, 72, 77, .28); cursor: pointer;
+  overflow: hidden; position: relative;
+  transition: width .3s ease, border-radius .3s ease, background-color .3s ease;
+}
+.btn-cancelar i { font-size: 1.05rem; transition: transform .3s ease, opacity .2s ease; }
+.btn-cancelar::before {
+  position: absolute; content: "Cancelar"; color: #fff;
+  font-size: 2px; font-weight: 600; opacity: 0; transition: .3s;
+}
+.btn-cancelar:hover {
+  width: 128px; border-radius: 50px; background-color: #cf3a3f;
+}
+.btn-cancelar:hover i { transform: translateY(60%); opacity: 0; }
+.btn-cancelar:hover::before { font-size: 13px; opacity: 1; transform: translateY(0); }

@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.db import connection, transaction
 from django.db.models import DecimalField, ExpressionWrapper, F, Sum
 from django.http import Http404
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import ClienteForm, ProductoForm, ProveedorForm, RegistroForm
 from .models import Cliente, DetallePedido, Pedido, Producto, Proveedor
@@ -102,6 +102,23 @@ def mis_pedidos(request):
 
 
 @login_required
+def cancelar_pedido(request, pk):
+    if request.method != 'POST':
+        return redirect('mis_pedidos')
+
+    cliente = cliente_actual(request)
+    if cliente is None:
+        messages.error(request, 'Tu usuario aún no está asociado a un cliente.')
+        return redirect('mis_pedidos')
+
+    pedido = get_object_or_404(Pedido, pk=pk, cliente=cliente)
+    numero = pedido.id_pedido
+    pedido.delete()
+    messages.success(request, f'Pedido #{numero} cancelado.', extra_tags='eliminado cancelado')
+    return redirect('mis_pedidos')
+
+
+@login_required
 def nuevo_pedido(request):
     cliente = cliente_actual(request)
     if cliente is None:
@@ -130,7 +147,7 @@ def nuevo_pedido(request):
                                   precio_compra=p.precio_unitario)
                     for p, c in items
                 ])
-            messages.success(request, f'Pedido #{pedido.id_pedido} registrado.')
+            messages.success(request, f'Pedido #{pedido.id_pedido} registrado.', extra_tags='pedido')
             return redirect('mis_pedidos')
 
     return render(request, 'ventas/nuevo_pedido.html', {'productos': productos})
@@ -273,12 +290,13 @@ class BaseForm(StaffMixin):
 class BaseEliminar(StaffMixin, DeleteView):
     http_method_names = ['post']     # borrar solo se permite por POST
     lista = ''
+    nombre = 'Registro'              # se muestra en el aviso: "Cliente eliminado."
     motivo = ''                      # por qué puede estar protegido
 
     def form_valid(self, form):
         try:
             self.object.delete()
-            messages.success(self.request, 'Registro eliminado.')
+            messages.success(self.request, f'{self.nombre} eliminado.', extra_tags='eliminado')
         except ProtectedError:
             messages.error(self.request, f'No se puede eliminar: {self.motivo}.')
         return redirect(self.lista)
@@ -303,6 +321,7 @@ class ClienteEditar(BaseForm, UpdateView):
 
 class ClienteEliminar(BaseEliminar):
     model, lista = Cliente, 'clientes'
+    nombre = 'Cliente'
     motivo = 'el cliente tiene pedidos registrados'
 
 
@@ -326,6 +345,7 @@ class ProductoEditar(BaseForm, UpdateView):
 
 class ProductoEliminar(BaseEliminar):
     model, lista = Producto, 'productos'
+    nombre = 'Producto'
     motivo = 'el producto aparece en pedidos'
 
 
@@ -347,6 +367,7 @@ class ProveedorEditar(BaseForm, UpdateView):
 
 class ProveedorEliminar(BaseEliminar):
     model, lista = Proveedor, 'proveedores'
+    nombre = 'Proveedor'
     motivo = 'el proveedor tiene productos asociados'
 
 
@@ -367,4 +388,5 @@ class PedidoLista(BaseLista):
 
 class PedidoEliminar(BaseEliminar):
     model, lista = Pedido, 'pedidos'
+    nombre = 'Pedido'
     motivo = 'no fue posible borrar el pedido'

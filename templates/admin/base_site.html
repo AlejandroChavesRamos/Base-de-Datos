@@ -10,7 +10,12 @@
 {% endblock %}
 
 {% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">EmpresaUN <span>· Gestión</span></a></h1>
+<h1 id="site-name">
+  <a href="{% url 'admin:index' %}">
+    <img src="{% static 'img/logo.jpg' %}" alt="EmpresaUN" class="logo-admin">
+    <span>· Gestión</span>
+  </a>
+</h1>
 {% endblock %}
 
 {% block nav-global %}

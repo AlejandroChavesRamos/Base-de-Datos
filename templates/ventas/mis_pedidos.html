@@ -2,11 +2,25 @@
 {% block contenido %}
 <h1 class="mb-4">Mis pedidos</h1>
 {% for p in pedidos %}
-<div class="tarjeta mb-3">
-  <div class="d-flex justify-content-between">
-    <div><strong class="titulo fs-5">Pedido #{{ p.id_pedido }}</strong>
-         <span class="text-muted ms-2">{{ p.fecha_pedido }}</span></div>
-    <div class="precio">${{ p.total }}</div>
+<div class="tarjeta tarjeta-pedido mb-3" style="--i: {{ forloop.counter0 }}">
+  <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+    <div>
+      <strong class="titulo fs-5">Pedido #{{ p.id_pedido }}</strong>
+      <span class="text-muted ms-2">{{ p.fecha_pedido }}</span>
+    </div>
+    <div class="d-flex align-items-center gap-3">
+      <div class="precio">${{ p.total }}</div>
+      <form method="post" action="{% url 'cancelar_pedido' p.id_pedido %}"
+            data-titulo="¿Cancelar este pedido?"
+            data-confirmar="El pedido #{{ p.id_pedido }} se eliminará y no se podrá recuperar."
+            data-ok="Sí, cancelar"
+            data-icono="bi-x-circle">
+        {% csrf_token %}
+        <button type="submit" class="btn-cancelar" aria-label="Cancelar pedido">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </form>
+    </div>
   </div>
   <table class="table tabla mt-3 mb-0">
     <thead><tr><th>Producto</th><th>Cantidad</th><th>Precio</th></tr></thead>

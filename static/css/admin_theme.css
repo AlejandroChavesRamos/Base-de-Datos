@@ -49,8 +49,12 @@ h1, h2, h3, #site-name { font-family: 'Fraunces', Georgia, serif; }
 
 /* ===== 3. CABECERA ===== */
 #header { padding: 14px 28px; box-shadow: 0 2px 12px rgba(15, 35, 54, .25); }
-#site-name a { font-size: 1.5rem; font-weight: 700; color: #fff; }
+#site-name a { font-size: 1.5rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: .65rem; }
 #site-name span { color: var(--accent); font-style: italic; font-weight: 600; font-size: 1.1rem; }
+.logo-admin {
+  height: 42px; width: auto; display: block;
+  background: #fff; border-radius: 8px; padding: 3px;
+}
 #user-tools a { border-bottom: 0; opacity: .85; }
 #user-tools a:hover { opacity: 1; color: var(--accent); }
 .volver {
